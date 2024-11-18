@@ -9,8 +9,8 @@ let myStick;
 let myBall;
 
 let bricks = [];
-let brickRows = 1;
-let brickCols = 2;
+let brickRows = 5;
+let brickCols = 10;
 
 let ballshot = false;
 let isGameOver = false;
@@ -117,6 +117,9 @@ function stick(width, height, color) {
         ctx.shadowColor = "black";
         ctx.fillStyle = color;
         ctx.fillRect(this.x, this.y, this.width, this.height);
+
+        ctx.shadowBlur = 0;
+        ctx.shadowColor = "transparent"
     }
     this.newPos = function(){
         this.x += this.speedX;
@@ -244,10 +247,7 @@ function createBricks() {
         for (let c = 0; c < brickCols; c++) {
 
             let x = c * (brickwidth + brick_margin) + brick_margin;
-            let y = r * (brickheight + brick_margin) + brick_margin;
-
-            if (r === 0)
-                y += header_margin;
+            let y = r * (brickheight + brick_margin) + brick_margin + header_margin;
 
             bricks.push(new brick(x, y, brickwidth, brickheight, colors[r % colors.length]));
         }
@@ -256,8 +256,8 @@ function createBricks() {
 }
 
 function gameOver() {
-    isGameOver = true;
     hiscore = localStorage.getItem('hiscore');
+    console.log("Hiscore: ", hiscore)
     if (hiscore) {
         if (score > hiscore) {
             localStorage.setItem('hiscore', score);
@@ -265,6 +265,8 @@ function gameOver() {
     } else {
         localStorage.setItem('hiscore', score);
     }
+    hiscore = localStorage.getItem('hiscore');
+    isGameOver = true;
     clearInterval(myGameArea.interval);
 
 }
